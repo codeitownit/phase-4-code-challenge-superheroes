@@ -59,7 +59,7 @@ class HeroPower(db.Model):
 
     @validates('strength')
     def validate_strength(self, key, value):
-        valid_strengths = ['Strong', 'Weak', 'Average']
+        valid_strengths = ['strong', 'weak', 'average']
         if value not in valid_strengths:
             raise ValueError("Invalid strength value")
         return value
