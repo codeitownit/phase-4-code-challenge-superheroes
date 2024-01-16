@@ -33,6 +33,15 @@ class Power(db.Model):
 
     hero_powers = db.relationship('HeroPower', backref='power')
 
+    @validates('description')
+    def validate_description(self, key, value):
+        if not value:
+            raise ValueError("Description must be present")
+        if len(value) < 20:
+            raise ValueError("Description must be at least 20 characters long")
+        return value
+
+
     def __repr__(self):
         return f'<Power {self.name}>'
 
@@ -47,6 +56,13 @@ class HeroPower(db.Model):
 
     hero_id = db.Column(db.Integer, db.ForeignKey('heroes.id'), nullable = False)
     power_id = db.Column(db.Integer, db.ForeignKey('powers.id'), nullable = False)
+
+    @validates('strength')
+    def validate_strength(self, key, value):
+        valid_strengths = ['Strong', 'Weak', 'Average']
+        if value not in valid_strengths:
+            raise ValueError("Invalid strength value")
+        return value
 
     def __repr__(self):
         return f'<HeroPower {self.strength}>'
